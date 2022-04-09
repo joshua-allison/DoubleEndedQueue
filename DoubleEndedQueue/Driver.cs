@@ -25,7 +25,7 @@ namespace DoubleEndedQueue
         {
             const int NUM_QUEUE = 8;
             int num = 0;
-            Deque queue = new Deque();
+            Deque<int> queue = new Deque<int>();
 
             Console.Write("Testing basic queue, addTail, removeHead, isEmpty\n\n");
 
@@ -53,7 +53,7 @@ namespace DoubleEndedQueue
         {
             const int NUM_RESIZE = 8;
             const int NUM_RESIZE_EXTRA = 4;
-            Deque resize = new Deque(NUM_RESIZE);
+            Deque<int> resize = new Deque<int>(NUM_RESIZE);
             int num = 0;
 
             Console.Write("Testing resizing queue, addTail, removeHead\n\n");
@@ -99,7 +99,7 @@ namespace DoubleEndedQueue
         {
             const int NUM_LIST = 7;
             const int NUM_LIST_EXTRA = 5;
-            Deque list = new Deque(NUM_LIST + 1);
+            Deque<int> list = new Deque<int>(NUM_LIST + 1);
             int[] listValues = new int[NUM_LIST + NUM_LIST_EXTRA] { 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78 };
             int num = 0;
 
@@ -141,7 +141,7 @@ namespace DoubleEndedQueue
         static void AddHeadTest()
         {
             const int NUM_HEAD = 7;
-            Deque head = new Deque();
+            Deque<int> head = new Deque<int>();
             int[] headValues = new int[NUM_HEAD] { 3, 5, 7, 11, 13, 17, 19 };
 
             Console.Write("Testing addHead\n\n");
@@ -166,7 +166,7 @@ namespace DoubleEndedQueue
         static void RemoveTailTest()
         {
             const int NUM_TAIL = 6;
-            Deque tail = new Deque();
+            Deque<int> tail = new Deque<int>();
             int[] tailValues = new int[NUM_TAIL] { 1, 2, 4, 8, 16, 32 };
 
             Console.Write("Testing removeTail\n\n");
@@ -192,7 +192,7 @@ namespace DoubleEndedQueue
         {
             const int NUM_REV_QUEUE = 8;
             const int NUM_REV_ADD = 4;
-            Deque revQueue = new Deque(NUM_REV_QUEUE);
+            Deque<int> revQueue = new Deque<int>(NUM_REV_QUEUE);
             int num = 0;
 
             Console.Write("Testing reverse FIFO, addHead, removeTail, isEmpty\n\n");
@@ -252,7 +252,7 @@ namespace DoubleEndedQueue
         static void MixTest()
         {
             const int NUM_MIX = 3;
-            Deque mixQueue = new Deque(NUM_MIX * 2);
+            Deque<int> mixQueue = new Deque<int>(NUM_MIX * 2);
             int num = 0;
             Console.Write("Testing reverse mix of adds and removes\n\n");
 
