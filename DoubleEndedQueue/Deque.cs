@@ -91,7 +91,7 @@ namespace DoubleEndedQueue
         }
         public int removeTail(int index = -1)
         {
-            index = index == -1 ? j : index;
+            index = index == -1 ? n-1 : index;
             int value = a[(j + index) % a.Length];
             if (index < n / 2)
             { // shift a[0],..,[i-1] right one position
