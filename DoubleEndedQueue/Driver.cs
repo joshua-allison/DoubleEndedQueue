@@ -8,14 +8,14 @@ namespace DoubleEndedQueue
         {
             // uncomment function to select a given test
 
-             QueueTest();
-             ResizeTest();
-             ListTest();
-             AddHeadTest();
-             RemoveTailTest();
-            // RevQueueTest();
-            // MixTest();
-            // ThinkTest();
+            QueueTest();
+            ResizeTest();
+            ListTest();
+            AddHeadTest();
+            RemoveTailTest();
+            RevQueueTest();
+            MixTest();
+            ThinkTest();
 
             Console.Write("\nAll done");
             Console.Write("\nPress Enter to exit console");
@@ -80,7 +80,7 @@ namespace DoubleEndedQueue
                 num += 1;
             }
 
-            Console.Write("Dumping the array \n");
+            Console.Write("Dumping the queue \n");
             Console.Write("Expected 17 19 21 23 9 11 13 15\n");
             Console.Write("Actually " + resize.dumpArray() + "\n");
 
@@ -221,7 +221,7 @@ namespace DoubleEndedQueue
                 num += 1;
             }
 
-            Console.Write("Now dumping array\n");
+            Console.Write("Now dumping queue\n");
             Console.Write("Expected 14 12 10 8 22 20 18 16\n");
             Console.Write("Actually " + revQueue.dumpArray() + "\n");
 
@@ -231,11 +231,11 @@ namespace DoubleEndedQueue
                 revQueue.addHead(2 * num);
                 num += 1;
             }
-            Console.Write("Now dumping array\n");
+            Console.Write("Now dumping queue\n");
             Console.Write("Expected 22 20 18 16 14 12 10 8 38 36 34 32 30 28 26 24\n");
             Console.Write("Actually " + revQueue.dumpArray() + "\n");
 
-            Console.Write("\nNow using removeTail to empty array\n");
+            Console.Write("\nNow using removeTail to empty queue\n");
             Console.Write("Expected 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38\n");
             Console.Write("Actually ");
             for (int i = 0; i < NUM_REV_QUEUE * 2; i++)
@@ -268,7 +268,7 @@ namespace DoubleEndedQueue
                 mixQueue.addHead(2 * num);
                 num += 1;
             }
-            Console.Write("Dumping array \n");
+            Console.Write("Dumping queue \n");
             Console.Write("Expected 1 3 5 10 8 6\n");
             Console.Write("Actually " + mixQueue.dumpArray() + "\n");
 
@@ -278,13 +278,13 @@ namespace DoubleEndedQueue
                 mixQueue.addTail(2 * num + 1);
                 num += 1;
             }
-            Console.Write("Adding three more to head to fill array\n");
+            Console.Write("Adding three more to head to fill queue\n");
             for (int i = 0; i < NUM_MIX; i++)
             {
                 mixQueue.addHead(2 * num);
                 num += 1;
             }
-            Console.Write("Dumping array \n");
+            Console.Write("Dumping queue \n");
             Console.Write("Expected 10 8 6 1 3 5 13 15 17 22 20 18\n");
             Console.Write("Actually " + mixQueue.dumpArray() + "\n");
 
@@ -343,6 +343,12 @@ namespace DoubleEndedQueue
 
             const int NUM_THINK = 5;
             int[] thinkValues = new int[NUM_THINK] { 2, 3, 5, 7, 11 };
+            Deque<int> thinkQueue = new Deque<int>(NUM_THINK);
+            foreach (var item in thinkValues)
+            {
+                thinkQueue.addHead(item);
+            }
+            Console.WriteLine(thinkQueue.dumpArray());
 
 
 
