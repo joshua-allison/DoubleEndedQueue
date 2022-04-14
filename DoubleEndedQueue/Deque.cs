@@ -1,128 +1,131 @@
 ﻿using System;
+using System.Linq;
 
-namespace DoubleEndedQueue
+namespace Deque
 {
-    class Deque <T>
+    public class Deque
     {
-        // This method names, parameters, and expected output are necessitated by the driver and "CS 260 - Lab 2: Double Ended Queue" by Jim Bailey.
-        // The implementations of those methods are based almost completely on Chapter 2 of "Open Data Structures" by Pat Morin.
-        //              https://www.aupress.ca/app/uploads/120226_99Z_Morin_2013-Open_Data_Structures.pdf
-        // The adapation of the above and programming of this class was performed by Josh Allison
+        /* The method names, method parameters, and expected output of this Deque.cs are necessitated by the test methods written in Driver.cs,
+         * and "cs 260: double ended queue (lab 2)", both by jim bailey.
+         * the adaptation of those methods are almost completely based on the instructions of chapter 2 of "open data structures" by pat morin.
+         *      Open Data Structures: https://www.aupress.ca/app/uploads/120226_99z_morin_2013-open_data_structures.pdf
+         *  The algorithms taught in chapter 2 of "open data structures" were adapted and included in this dequeue.cs to -
+         *  address and test against the methods written in driver.cs.
+         *  This implementation of a deque class is by josh allison
+        */
 
-        private readonly IndexOutOfRangeException out_of_range = new IndexOutOfRangeException();
         private const int DEFAULT_SIZE = 20;
-        private T[] queue { get; set; } // the array storing the queue
-        private int head { get; set; } // the int keeping track of the index of what will be dequed next, accounting for wrapping
-        private int tail { get; set; } // the int keeping track of the number of elements stored in 'queue', or the index of the tail
+        private int[] Queue { get; set; } // the array storing the queue
+        private int Head { get; set; } // the int keeping track of the index of the oldest element in the queue
+        private int Tail { get; set; }  // the int keeping track of the index of the newest element in the queue
+        private int NumQueued { get; set; } // the int keeping track of how many elements there are in the queue
+        public int Length { get; set; }
         public Deque (int size = DEFAULT_SIZE)
         {
-            // if the size is less than one, make it the default size instead
+            // if the size parameter is less than one, make it the default size instead
             size = size < 1 ? DEFAULT_SIZE : size;
-            // make the queue member equal to the size parameter, or the default if the parameter was omitted or < 1
-            queue = new T[size];
+            // initialize the head and tail to the first index
+            Tail = -1;
+            Head = 0;
+            // make the queue array member's length equal to the size parameter, or the default if the parameter was omitted or < 1
+            Queue = new int[size];
+            Length = Queue.Length;
         }
         public bool isEmpty()
         {
-            return tail == 0 ? true : false;
+            //The array is empty if the head and tail are in their starting positions...
+            return NumQueued == 0;
         }
-        public void throwIfEmpty()
+        public bool IsFull()
         {
-            if (isEmpty())
-                throw out_of_range;
-        }
-        public bool isFull()
-        {
-            return tail + 1 > queue.Length ? true : false;
+            return NumQueued == Length;
         }
         public void resize()
         {
-            T[] tempArray = new T[tail * 2];
-            for (int k = 0; k < tail; k++)
-                tempArray[k] = queue[(head + k) % queue.Length];
-            queue = tempArray;
-            head = 0;
-        }
-        public void resizeIfFull()
-        {
-            if (isFull())
-                resize();
+            //Double the size of the array.
+            int[] tempArray = new int[Length * 2];
+            // If the array is wrapped...
+            if (!isEmpty())
+            {
+                if (Tail < Head)
+                {
+                    int[] ZeroToTail = Queue[0..Tail];
+                    int[] HeadToEnd = Queue[Head..(Length - 1)];
+                    for (int i = 0; i < HeadToEnd.Length - 1; i++)
+                    {
+                        tempArray[i] = HeadToEnd[i];
+                    }
+                    for (int j = 0; j < ZeroToTail.Length; j++)
+                    {
+                        tempArray[j + (HeadToEnd.Length - 1)] = ZeroToTail[j];
+                    }
+                }
+                else
+                // If the array is not wrapped...
+                {
+                    int[] HeadToTail = Queue[Head..Tail];
+                    for (int k = 0; k < HeadToTail.Length - 1; k++)
+                    {
+                        tempArray[k] = HeadToTail[k];
+                    }
+                }
+            }
+            //Update the head and tail,
+            Head = 0;
+            Tail = Queue.Length - 1;
+            //And set the Queue array equal to the constructed temp array.
+            Queue = tempArray;
+            Length *= 2;
         }
         public string dumpArray()
         {
             string dump = "";
-            foreach (var item in queue)
+            foreach (var item in Queue)
                 dump += item + " ";
             return dump;
         }
         public string listQueue()
         {
             string list = "";
-            for (int i = 0; i < tail; i++)
-                list += queue[i] + " ";
+            for (int i = 0; i < Queue.Length-1; i++)
+                list += Queue[i] + " ";
             return list;
         }
-        public void addTail(T value)
+        public void addTail(int value)
         {
-            resizeIfFull();
-            queue[(head + tail) % queue.Length] = value;
-            tail++;
-        }
-        public T removeTail(int index = -1)
-        {
-            throwIfEmpty();
-            // This function actually has the ability to remove a value at any index position,
-            // but it's default behavior is to remove at the tail.
-            index = index == -1 ? tail - 1 : index;
-            T value = queue[(head + index) % queue.Length];
-            if (index < tail / 2)
-            {
-                // shift queue[0],..,[i-1] right one position
-                for (int k = index; k > 0; k--)
-                    queue[(head + k) % queue.Length] = queue[(head + k - 1) % queue.Length];
-                head = (head + 1) % queue.Length;
-            }
-            else
-            {
-                // shift a[i+1],..,a[tail-1] left one position
-                for (int k = index; k < tail - 1; k++)
-                    queue[(head + k) % queue.Length] = queue[(head + k + 1) % queue.Length];
-            }
-            tail--;
-            if (3 * tail < queue.Length)
-                resize();
-            return value;
-        }
-        public void addHead(T value, int index = 0)
-        {
-            // This function actually has the ability to add a value at any index position,
-            // but it's default behavior is to add at the head.
-            resizeIfFull();
-            if (index < tail / 2)
-            {
-                // shift queue[0],..,queue[index-1] left one position
-                head = (head == 0) ? queue.Length - 1 : head - 1; //(head-1)mod queue.length
-                for (int k = 0; k <= index - 1; k++)
-                    queue[(head + k) % queue.Length] = queue[(head + k + 1) % queue.Length];
-            }
-            else
-            {
-                // shift queue[index],..,queue[tail-1] right one position
-                for (int k = tail; k > index; k--)
-                    queue[(head + k) % queue.Length] = queue[(head + k - 1) % queue.Length];
-            }
-            queue[(head + index) % queue.Length] = value;
-            tail++;
+            // The standard Queue Enque (FIFO) 
 
+            if (IsFull()) resize();
+
+            //If the tail is at the last element (and we know that the array is not full)
+            if (Tail == Length - 1)
+                //Then wrap the queue
+                Tail = -1;
+
+            //Finally, Incremenet the tail and the number of queued elements,
+            Tail++;
+            NumQueued++;
+            //and at the index of the tail, set the value equal to the passed in parameter
+            Queue[Tail] = value;
         }
-        public T removeHead()
+        public int removeHead()
         {
-            throwIfEmpty();
-            T value = queue[head];
-            head = (head + 1) % queue.Length;
-            tail--;
-            if (queue.Length >= 3 * tail)
-                resize();
+            // The standard Queue Deque (FIFO) 
+
+            int value = Queue[Head];
+            Head++;
+            NumQueued--;
             return value;
+        }
+        public void addHead(int value)
+        {
+            // Enables Enqueing at the head (LIFO)
+            throw new NotImplementedException();
+        }
+        public int removeTail()
+        {
+            // Enables Dequeing at the tail (LIFO)
+            throw new NotImplementedException();
         }
     }
 }

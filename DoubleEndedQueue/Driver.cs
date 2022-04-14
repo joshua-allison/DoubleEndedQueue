@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DoubleEndedQueue
+namespace Deque
 {
     class Driver
     {
@@ -8,24 +8,25 @@ namespace DoubleEndedQueue
         {
             // uncomment function to select a given test
 
-            QueueTest();
-            ResizeTest();
-            ListTest();
+            //QueueTest();
+            //ResizeTest();
+            //ListTest();
             AddHeadTest();
-            RemoveTailTest();
-            RevQueueTest();
-            MixTest();
-            ThinkTest();
+            //RemoveTailTest();
+            //RevQueueTest();
+            //MixTest();
+            //ThinkTest();
 
             Console.Write("\nAll done");
             Console.Write("\nPress Enter to exit console");
             Console.Read();
         }
+
         static void QueueTest()
         {
             const int NUM_QUEUE = 8;
             int num = 0;
-            Deque<int> queue = new Deque<int>();
+            Deque queue = new Deque();
 
             Console.Write("Testing basic queue, addTail, removeHead, isEmpty\n\n");
 
@@ -49,11 +50,12 @@ namespace DoubleEndedQueue
 
             Console.Write("\nDone with basic test\n\n");
         }
+
         static void ResizeTest()
         {
             const int NUM_RESIZE = 8;
             const int NUM_RESIZE_EXTRA = 4;
-            Deque<int> resize = new Deque<int>(NUM_RESIZE);
+            Deque resize = new Deque(NUM_RESIZE);
             int num = 0;
 
             Console.Write("Testing resizing queue, addTail, removeHead\n\n");
@@ -80,7 +82,7 @@ namespace DoubleEndedQueue
                 num += 1;
             }
 
-            Console.Write("Dumping the queue \n");
+            Console.Write("Dumping the array \n");
             Console.Write("Expected 17 19 21 23 9 11 13 15\n");
             Console.Write("Actually " + resize.dumpArray() + "\n");
 
@@ -95,11 +97,12 @@ namespace DoubleEndedQueue
 
             Console.Write("\nDone with resize test\n\n");
         }
+
         static void ListTest()
         {
             const int NUM_LIST = 7;
             const int NUM_LIST_EXTRA = 5;
-            Deque<int> list = new Deque<int>(NUM_LIST + 1);
+            Deque list = new Deque(NUM_LIST + 1);
             int[] listValues = new int[NUM_LIST + NUM_LIST_EXTRA] { 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78 };
             int num = 0;
 
@@ -138,10 +141,11 @@ namespace DoubleEndedQueue
 
             Console.Write("\nDone with testing listQueue\n\n");
         }
+
         static void AddHeadTest()
         {
             const int NUM_HEAD = 7;
-            Deque<int> head = new Deque<int>();
+            Deque head = new Deque();
             int[] headValues = new int[NUM_HEAD] { 3, 5, 7, 11, 13, 17, 19 };
 
             Console.Write("Testing addHead\n\n");
@@ -163,10 +167,11 @@ namespace DoubleEndedQueue
 
             Console.Write("\nDone with testing addHead\n\n");
         }
+
         static void RemoveTailTest()
         {
             const int NUM_TAIL = 6;
-            Deque<int> tail = new Deque<int>();
+            Deque tail = new Deque();
             int[] tailValues = new int[NUM_TAIL] { 1, 2, 4, 8, 16, 32 };
 
             Console.Write("Testing removeTail\n\n");
@@ -188,11 +193,12 @@ namespace DoubleEndedQueue
 
             Console.Write("\nDone with testing removeTail\n\n");
         }
+
         static void RevQueueTest()
         {
             const int NUM_REV_QUEUE = 8;
             const int NUM_REV_ADD = 4;
-            Deque<int> revQueue = new Deque<int>(NUM_REV_QUEUE);
+            Deque revQueue = new Deque(NUM_REV_QUEUE);
             int num = 0;
 
             Console.Write("Testing reverse FIFO, addHead, removeTail, isEmpty\n\n");
@@ -221,7 +227,7 @@ namespace DoubleEndedQueue
                 num += 1;
             }
 
-            Console.Write("Now dumping queue\n");
+            Console.Write("Now dumping array\n");
             Console.Write("Expected 14 12 10 8 22 20 18 16\n");
             Console.Write("Actually " + revQueue.dumpArray() + "\n");
 
@@ -231,11 +237,11 @@ namespace DoubleEndedQueue
                 revQueue.addHead(2 * num);
                 num += 1;
             }
-            Console.Write("Now dumping queue\n");
+            Console.Write("Now dumping array\n");
             Console.Write("Expected 22 20 18 16 14 12 10 8 38 36 34 32 30 28 26 24\n");
             Console.Write("Actually " + revQueue.dumpArray() + "\n");
 
-            Console.Write("\nNow using removeTail to empty queue\n");
+            Console.Write("\nNow using removeTail to empty array\n");
             Console.Write("Expected 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38\n");
             Console.Write("Actually ");
             for (int i = 0; i < NUM_REV_QUEUE * 2; i++)
@@ -249,10 +255,11 @@ namespace DoubleEndedQueue
 
             Console.Write("\nDone with reverse FIFO tests\n\n");
         }
+
         static void MixTest()
         {
             const int NUM_MIX = 3;
-            Deque<int> mixQueue = new Deque<int>(NUM_MIX * 2);
+            Deque mixQueue = new Deque(NUM_MIX * 2);
             int num = 0;
             Console.Write("Testing reverse mix of adds and removes\n\n");
 
@@ -268,7 +275,7 @@ namespace DoubleEndedQueue
                 mixQueue.addHead(2 * num);
                 num += 1;
             }
-            Console.Write("Dumping queue \n");
+            Console.Write("Dumping array \n");
             Console.Write("Expected 1 3 5 10 8 6\n");
             Console.Write("Actually " + mixQueue.dumpArray() + "\n");
 
@@ -278,13 +285,13 @@ namespace DoubleEndedQueue
                 mixQueue.addTail(2 * num + 1);
                 num += 1;
             }
-            Console.Write("Adding three more to head to fill queue\n");
+            Console.Write("Adding three more to head to fill array\n");
             for (int i = 0; i < NUM_MIX; i++)
             {
                 mixQueue.addHead(2 * num);
                 num += 1;
             }
-            Console.Write("Dumping queue \n");
+            Console.Write("Dumping array \n");
             Console.Write("Expected 10 8 6 1 3 5 13 15 17 22 20 18\n");
             Console.Write("Actually " + mixQueue.dumpArray() + "\n");
 
@@ -337,18 +344,13 @@ namespace DoubleEndedQueue
 
             Console.Write("\nDone with mixed tests\n\n");
         }
+
         static void ThinkTest()
         {
             Console.Write("This location is for you to add your solution to the thinking problem\n");
 
             const int NUM_THINK = 5;
             int[] thinkValues = new int[NUM_THINK] { 2, 3, 5, 7, 11 };
-            Deque<int> thinkQueue = new Deque<int>(NUM_THINK);
-            foreach (var item in thinkValues)
-            {
-                thinkQueue.addHead(item);
-            }
-            Console.WriteLine(thinkQueue.dumpArray());
 
 
 
