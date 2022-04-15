@@ -129,6 +129,8 @@ namespace Deque
             // The standard Queue Deque (FIFO) 
             if (isEmpty()) throw new IndexOutOfRangeException();
             int value = Queue[Head];
+            if (Head == Length - 1)
+                Head = -1;
             Head++;
             NumQueued--;
             return value;
@@ -139,15 +141,16 @@ namespace Deque
 
             if (IsFull()) resize();
 
-            //If the head is at the first element (and we know that the array is not full)
             if (Head == 0)
-                //Then wrap the queue
+            {
                 Head = Queue.Length;
+                if (isEmpty())
+                    Tail = Head -1;
+            }
 
-            // Incremenet the tail and the number of queued elements,
             Head--;
             NumQueued++;
-            //and at the index of the head, set the value equal to the passed in parameter
+
             Queue[Head] = value;
         }
         public int removeTail()

@@ -8,13 +8,13 @@ namespace Deque
         {
             // uncomment function to select a given test
 
-            //QueueTest();
-            //ResizeTest();
-            //ListTest();
-            //AddHeadTest();
-            //RemoveTailTest();
+            QueueTest();
+            ResizeTest();
+            ListTest();
+            AddHeadTest();
+            RemoveTailTest();
             RevQueueTest();
-            //MixTest();
+            MixTest();
             //ThinkTest();
 
             Console.Write("\nAll done");
