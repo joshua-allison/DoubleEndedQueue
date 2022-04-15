@@ -354,7 +354,7 @@ namespace Deque
 
 
             /*      My solution to the thinking problem:
-             * With the way Deque is written, there's actually two ways to accomplish this solution
+             * With the way Deque is written, there's actually two ways to accomplish this think test:
              * If we think of the Head methods as a positive (+), and the Tail methods as a negative (-),
              * Then to create a Queue, we need to restrict the methods used to + - or - + (either addHead and removeTail OR addTail and removeHead)
              * To create a stack, we need to restrict the methods used to + + or - - (either addHead and removeHead OR addTail and removeTail)
@@ -383,6 +383,7 @@ namespace Deque
             {
                 tailResult += tailStack.removeTail() + " ";
             }
+
 
 
             Console.Write("Values in reverse order should be 11 7 5 3 2\n");
