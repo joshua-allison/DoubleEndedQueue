@@ -40,42 +40,42 @@ namespace Deque
         {
             return NumQueued == Length;
         }
+        private bool IsWrapped()
+        {
+            return (Tail < Head);
+        }
         public void resize()
         {
             //Double the size of the array.
             int[] tempArray = new int[Length * 2];
-            // If the array is wrapped...
+            //Don't bother with copying values if the array is empty
             if (!isEmpty())
             {
-                if (Tail < Head)
+                if (IsWrapped())
                 {
-                    int[] ZeroToTail = Queue[0..Tail];
-                    int[] HeadToEnd = Queue[Head..(Length - 1)];
-                    for (int i = 0; i < HeadToEnd.Length - 1; i++)
-                    {
-                        tempArray[i] = HeadToEnd[i];
-                    }
-                    for (int j = 0; j < ZeroToTail.Length; j++)
-                    {
-                        tempArray[j + (HeadToEnd.Length - 1)] = ZeroToTail[j];
-                    }
+                    // Get both halves of the wrap
+                    int[] ZeroToTail = Queue[0..(Tail+1)];
+                    int[] HeadToEnd = Queue[Head..Length];
+                    // Copy over the wrap pieces to the temp array
+                    HeadToEnd.CopyTo(tempArray, 0);
+                    ZeroToTail.CopyTo(tempArray, HeadToEnd.Length);
                 }
                 else
                 // If the array is not wrapped...
                 {
-                    int[] HeadToTail = Queue[Head..Tail];
-                    for (int k = 0; k < HeadToTail.Length - 1; k++)
+                    for (int k = 0; k < NumQueued; k++)
                     {
-                        tempArray[k] = HeadToTail[k];
+                        tempArray[k] = Queue[k+Head];
                     }
                 }
             }
             //Update the head and tail,
             Head = 0;
             Tail = Queue.Length - 1;
-            //And set the Queue array equal to the constructed temp array.
+            //And set the Queue array equal to the constructed temp array
             Queue = tempArray;
-            Length *= 2;
+            //Finally, update the Length member to reflect the new queue size.
+            Length = Queue.Length;
         }
         public string dumpArray()
         {
@@ -87,8 +87,24 @@ namespace Deque
         public string listQueue()
         {
             string list = "";
-            for (int i = 0; i < Queue.Length-1; i++)
-                list += Queue[i] + " ";
+            if (IsWrapped())
+            {
+                //...If it is, copy over the pieces of the wraps to arrays 
+                int[] HeadToEnd = Queue[Head..Length];
+                int[] ZeroToTail = Queue[0..(Tail + 1)];
+                // then concat the elements of those arrays to the list
+                foreach (int num in HeadToEnd)
+                    list += (num + " ");
+                foreach (int num in ZeroToTail)
+                    list += (num + " ");
+            }
+            else
+            {
+                //... otherwise, just add the elements to list from head to tail.
+                int[] HeadToTail = Queue[Head..(Tail + 1)];
+                foreach (int num in HeadToTail)
+                    list += (num + " ");
+            }
             return list;
         }
         public void addTail(int value)
@@ -102,7 +118,7 @@ namespace Deque
                 //Then wrap the queue
                 Tail = -1;
 
-            //Finally, Incremenet the tail and the number of queued elements,
+            // Incremenet the tail and the number of queued elements,
             Tail++;
             NumQueued++;
             //and at the index of the tail, set the value equal to the passed in parameter
@@ -111,7 +127,7 @@ namespace Deque
         public int removeHead()
         {
             // The standard Queue Deque (FIFO) 
-
+            if (isEmpty()) throw new IndexOutOfRangeException();
             int value = Queue[Head];
             Head++;
             NumQueued--;
@@ -120,12 +136,38 @@ namespace Deque
         public void addHead(int value)
         {
             // Enables Enqueing at the head (LIFO)
-            throw new NotImplementedException();
+
+            if (IsFull()) resize();
+
+            //If the head is at the first element (and we know that the array is not full)
+            if (Head == 0)
+                //Then wrap the queue
+                Head = Queue.Length;
+
+            // Incremenet the tail and the number of queued elements,
+            Head--;
+            NumQueued++;
+            //and at the index of the head, set the value equal to the passed in parameter
+            Queue[Head] = value;
         }
         public int removeTail()
         {
             // Enables Dequeing at the tail (LIFO)
-            throw new NotImplementedException();
+
+            if (isEmpty()) throw new IndexOutOfRangeException();
+            int value = Queue[Tail];
+
+            if (IsWrapped())
+            {
+                if (Tail == 0)
+                    Tail = Length - 1;
+                else
+                    Tail--;
+            }
+            else
+                Tail--;
+            NumQueued--;
+            return value;
         }
     }
 }

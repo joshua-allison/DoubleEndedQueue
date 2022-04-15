@@ -11,9 +11,9 @@ namespace Deque
             //QueueTest();
             //ResizeTest();
             //ListTest();
-            AddHeadTest();
+            //AddHeadTest();
             //RemoveTailTest();
-            //RevQueueTest();
+            RevQueueTest();
             //MixTest();
             //ThinkTest();
 
