@@ -15,7 +15,7 @@ namespace Deque
             RemoveTailTest();
             RevQueueTest();
             MixTest();
-            //ThinkTest();
+            ThinkTest();
 
             Console.Write("\nAll done");
             Console.Write("\nPress Enter to exit console");
@@ -353,9 +353,41 @@ namespace Deque
             int[] thinkValues = new int[NUM_THINK] { 2, 3, 5, 7, 11 };
 
 
+            /*      My solution to the thinking problem:
+             * With the way Deque is written, there's actually two ways to accomplish this solution
+             * If we think of the Head methods as a positive (+), and the Tail methods as a negative (-),
+             * Then to create a Queue, we need to restrict the methods used to + - or - + (either addHead and removeTail OR addTail and removeHead)
+             * To create a stack, we need to restrict the methods used to + + or - - (either addHead and removeHead OR addTail and removeTail)
+             */
+
+            //creating a stack using only the Head methods of Deque
+            Deque headStack = new Deque(NUM_THINK);
+            foreach (int num in thinkValues)
+                headStack.addHead(num);
+
+            string headResult = "";
+            for (int i = 0; i < NUM_THINK; i++)
+            {
+                headResult += headStack.removeHead() + " ";
+            }
+
+
+
+            //creating a stack using only the Tail methods of Deque
+            Deque tailStack = new Deque(NUM_THINK);
+            foreach (int num in thinkValues)
+                tailStack.addTail(num);
+
+            string tailResult = "";
+            for (int i = 0; i < NUM_THINK; i++)
+            {
+                tailResult += tailStack.removeTail() + " ";
+            }
 
 
             Console.Write("Values in reverse order should be 11 7 5 3 2\n");
+            Console.Write("Using only head methods, values actually are " + headResult + "\n");
+            Console.Write("Using only tail methods, values actually are " + tailResult + "\n");
 
             Console.Write("\nDone with thinking test\n\n");
         }

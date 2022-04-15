@@ -7,10 +7,6 @@ namespace Deque
     {
         /* The method names, method parameters, and expected output of this Deque.cs are necessitated by the test methods written in Driver.cs,
          * and "cs 260: double ended queue (lab 2)", both by jim bailey.
-         * the adaptation of those methods are almost completely based on the instructions of chapter 2 of "open data structures" by pat morin.
-         *      Open Data Structures: https://www.aupress.ca/app/uploads/120226_99z_morin_2013-open_data_structures.pdf
-         *  The algorithms taught in chapter 2 of "open data structures" were adapted and included in this dequeue.cs to -
-         *  address and test against the methods written in driver.cs.
          *  This implementation of a deque class is by josh allison
         */
 
